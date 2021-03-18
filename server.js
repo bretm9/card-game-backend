@@ -18,5 +18,26 @@ server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 const connections = [null, null, null, null]
 
 io.on('connection', socket => {
-  console.log('New WS Connection');
+  let playerIndex = -1;
+
+  const findAvailablePlayer = () => {
+    for (const i in connections) {
+      if (connections[i] === null) {
+        playerIndex = i;
+        connections[i] = {id: i}
+        break
+      }
+    }
+  }
+
+  // Tell the connection client what player number they are
+  const emitPlayerNumber = () => {
+    socket.emit('player-number', playerIndex)
+    console.log(`Player ${playerIndex} has connected`);
+    // ignore player 5 
+    if (playerIndex === -1) return
+  }
+
+  findAvailablePlayer()
+  emitPlayerNumber()
 })
