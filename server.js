@@ -22,6 +22,14 @@ server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 const connections = [null, null, null, null]
 
 io.on('connection', socket => {
+  
+  // Send player number to client
+  socket.on('join', (callback) => {
+    callback(+playerIndex + 1)
+  });
+  
+
+  // Calculate player number
   let playerIndex = -1;
 
   const findAvailablePlayer = () => {
@@ -34,7 +42,7 @@ io.on('connection', socket => {
     }
   }
 
-  // Tell the connection client what player number they are
+  // log the connected players
   const emitPlayerNumber = () => {
     socket.emit('player-number', playerIndex)
     console.log(`Player ${playerIndex} has connected`);
