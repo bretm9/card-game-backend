@@ -2,10 +2,14 @@ const express = require('express');
 const path = require('path');
 const http = require('http');
 const PORT = process.env.PORT || 9000;
-const socketIo = require('socket.io');
 const app = express();
 const server = http.createServer(app);
-const io = socketIo(server);
+const socketio = require('socket.io')
+const io = socketio(server, {
+  cors: {
+    origin: "*",
+  }
+});
 
 // Set static folder
 app.use(express.static(path.join(__dirname, "public")));
